@@ -2,11 +2,15 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const reqLogger = require("./Middlewares/RequestLogger");
+const db_connect = require("./Configs/db_config");
 const userRouter = require("./Routes/User");
 const port = process.env.PORT || 5000;
 
+//connect to database
+db_connect();
+
 //middlewares
-app.use(express.json())
+app.use(express.json());
 app.use(reqLogger);
 
 //Routes

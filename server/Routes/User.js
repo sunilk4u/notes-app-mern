@@ -14,7 +14,7 @@ router.post("/login", loginUser);
 router.post("/register", signUpUser);
 
 //update user data in database
-router.patch("/update"), updateUser;
+router.patch("/update", updateUser);
 
 //delete user from the database
 router.delete("/deregister", deleteUser);

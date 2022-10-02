@@ -1,7 +1,11 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const userRouter = require("./Routes/User");
 const port = process.env.PORT || 5000;
+
+//Routes
+app.use("/api/user", userRouter);
 
 //base api endpoint
 app.get("/api", (req, res) => {

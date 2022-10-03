@@ -4,6 +4,7 @@ const app = express();
 const reqLogger = require("./Middlewares/RequestLogger");
 const db_connect = require("./Configs/db_config");
 const userRouter = require("./Routes/User");
+const textRouter = require("./Routes/Text");
 const port = process.env.PORT || 5000;
 
 //connect to database
@@ -15,6 +16,7 @@ app.use(reqLogger);
 
 //Routes
 app.use("/api/user", userRouter);
+app.use("/api/text", textRouter);
 
 //base api endpoint
 app.get("/api", (req, res) => {

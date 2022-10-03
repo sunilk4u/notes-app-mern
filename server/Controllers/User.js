@@ -134,8 +134,25 @@ const updateUser = async (req, res) => {
 };
 
 //delete user in database
-const deleteUser = (req, res) => {
-  res.send("ok");
+const deleteUser = async (req, res) => {
+  const { _id } = req.body;
+
+  const user = await User.findById(_id);
+
+  //check if user is present in database
+  if (!_id) {
+    return ErrorHandler(req, res, 400, "Invalid values");
+  } else if (!user) {
+    return ErrorHandler(req, res, 404, "User not found");
+  } else {
+    await User.deleteOne({ _id: _id });
+
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  }
 };
 
 module.exports = {

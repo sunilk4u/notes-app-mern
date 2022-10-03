@@ -14,6 +14,6 @@ const textSchema = new mongoose.Schema(
 );
 
 //create text model
-const Text = mognoose.model("text", textSchema);
+const Text = mongoose.model("text", textSchema);
 
 module.exports = Text;

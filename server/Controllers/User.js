@@ -145,6 +145,7 @@ const deleteUser = async (req, res) => {
   } else if (!user) {
     return ErrorHandler(req, res, 404, "User not found");
   } else {
+    //delete the user using id
     await User.deleteOne({ _id: _id });
 
     res.status(200).json({

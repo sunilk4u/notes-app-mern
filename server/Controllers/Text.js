@@ -18,7 +18,6 @@ const fetchData = async (req, res) => {
       return ErrorHandler(req, res, 404, "File not found in directory");
     } else {
       //read data from file and send it to client
-      console.log(fileDir + _id + ".txt");
       fs.readFile(fileDir + _id + ".txt", "utf-8", function (err, data) {
         if (err) {
           console.log(err);
@@ -47,6 +46,7 @@ const writeData = async (req, res) => {
         return ErrorHandler(req, res, 500, err.message);
       }
     });
+
     //write text in file
     fs.writeFile(fileDir + _id + ".txt", data, function (err) {
       if (err) {
@@ -54,6 +54,7 @@ const writeData = async (req, res) => {
         return ErrorHandler(req, res, 500, "cannot write data to file");
       }
     });
+
     res.status(201).json({
       message: "Write action performed",
     });
@@ -63,6 +64,7 @@ const writeData = async (req, res) => {
       name: file_name,
     });
 
+    //save text file data in database
     text.save((err) => {
       if (err) {
         console.log(err);
@@ -74,6 +76,7 @@ const writeData = async (req, res) => {
     if (!fs.existsSync("./Data")) {
       fs.mkdirSync("./Data");
     }
+
     //create a text file in directory with empty text
     fs.writeFile(fileDir + text._id + ".txt", "", function (err) {
       if (err) {
@@ -81,6 +84,7 @@ const writeData = async (req, res) => {
         return ErrorHandler(req, res, 500, "cannot write data to file");
       }
     });
+
     res.status(201).json(text);
   } else if (!_id && !data && !file_name) {
     return ErrorHandler(req, res, 400, "Empty field values");
@@ -110,6 +114,7 @@ const deleteFile = async (req, res) => {
           console.log(err);
         }
       });
+
       await Text.deleteOne({ _id: _id });
       res.status(200).json({
         message: "file deleted",

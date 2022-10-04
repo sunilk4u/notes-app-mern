@@ -7,6 +7,8 @@ const loginUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email: email });
+
+    //check if user is present in database
     if (user) {
       if (password === user.password) {
         res.status(200).json({

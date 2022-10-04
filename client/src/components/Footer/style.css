@@ -1,0 +1,13 @@
+.copyright{
+    background-color: var(--secondary-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+}
+.copyright a{
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+}

@@ -1,8 +1,15 @@
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/Login/LoginPage";
+
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">App</header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route exact path="/" element={<LoginPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

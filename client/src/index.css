@@ -1,10 +1,27 @@
 /* normalize default styles */
-@import 'normalize.css';
+@import "normalize.css";
+
+/* Google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+/* color pallete */
+:root {
+  --primary-light: #DD5353;
+  --primary-dark: #B73E3E;
+  --secondary-dark: #DBC8AC;
+  --secondary-light: #EDDBC0;
+}
 
 /* default styles for elements */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Poppins", sans-serif;
 }
 
+/* container definition */
+.container {
+  max-width: 1280px;
+  margin: auto;
+}

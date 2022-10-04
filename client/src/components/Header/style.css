@@ -1,0 +1,14 @@
+.header {
+  background-color: var(--secondary-light);
+  height: 4rem;
+}
+.header_logo {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+.header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

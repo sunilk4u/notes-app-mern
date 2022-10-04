@@ -8,7 +8,7 @@ const Header = () => {
       <div className="header container">
         <div className="header_logo">My Notes</div>
         <div className="auth_buttons">
-          <Button variant="contained">Log in</Button>
+          <Button color="primary" variant="contained">Log in</Button>
           <Button variant="outlined">Sign Up</Button>
         </div>
       </div>

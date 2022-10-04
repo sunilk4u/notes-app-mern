@@ -1,8 +1,7 @@
 import React from "react";
-import Header from "../../components/Header/Header";
 
 const LoginPage = () => {
-  return <Header />;
+  return <></>;
 };
 
 export default LoginPage;

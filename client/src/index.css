@@ -1,0 +1,10 @@
+/* normalize default styles */
+@import 'normalize.css';
+
+/* default styles for elements */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+

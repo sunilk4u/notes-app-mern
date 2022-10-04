@@ -14,10 +14,18 @@
 
 /* default styles for elements */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+/* app css */
+.App{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
 }
 
 /* container definition */
@@ -25,3 +33,5 @@
   max-width: 1280px;
   margin: auto;
 }
+
+

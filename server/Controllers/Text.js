@@ -33,24 +33,60 @@ const fetchData = async (req, res) => {
 };
 
 //write text data into file
-const writeData = (req, res) => {
+const writeData = async (req, res) => {
   const { _id, file_name, data } = req.body;
 
-  //check if text file with id is already present and data is present
+  //check if text file with id is already present and payload data is present
   //if both condition are true then perform write operation on existing file.
-  if (_id && data) {
+  if (_id && data && file_name) {
+    //change file name
+    const text = await Text.findById(_id);
+    text.file_name = file_name;
+    text.save((err) => {
+      if (err) {
+        return ErrorHandler(req, res, 500, err.message);
+      }
+    });
+    //write text in file
     fs.writeFile(fileDir + _id + ".txt", data, function (err) {
       if (err) {
         console.log(err);
         return ErrorHandler(req, res, 500, "cannot write data to file");
       }
-
-      res.status(201).json({
-        message: "Write action performed",
-      });
     });
+    res.status(201).json({
+      message: "Write action performed",
+    });
+  } else if (!_id && !data && file_name) {
+    //create a new file with file name in database
+    const text = new Text({
+      name: file_name,
+    });
+
+    text.save((err) => {
+      if (err) {
+        console.log(err);
+        return ErrorHandler(req, res, 500, "unable to create file.");
+      }
+    });
+
+    //if data folder is not present then create folder
+    if (!fs.existsSync("./Data")) {
+      fs.mkdirSync("./Data");
+    }
+    //create a text file in directory with empty text
+    fs.writeFile(fileDir + text._id + ".txt", "", function (err) {
+      if (err) {
+        console.log(err);
+        return ErrorHandler(req, res, 500, "cannot write data to file");
+      }
+    });
+    res.status(201).json(text);
+  } else if (!_id && !data && !file_name) {
+    return ErrorHandler(req, res, 400, "Empty field values");
   } else {
-    return ErrorHandler(req, res, 400, "Invalid values");
+    //if request matches no conditions
+    return ErrorHandler(req, res, 404, "Resource not found");
   }
 };
 

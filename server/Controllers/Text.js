@@ -34,7 +34,24 @@ const fetchData = async (req, res) => {
 
 //write text data into file
 const writeData = (req, res) => {
-  res.send("ok");
+  const { _id, file_name, data } = req.body;
+
+  //check if text file with id is already present and data is present
+  //if both condition are true then perform write operation on existing file.
+  if (_id && data) {
+    fs.writeFile(fileDir + _id + ".txt", data, function (err) {
+      if (err) {
+        console.log(err);
+        return ErrorHandler(req, res, 500, "cannot write data to file");
+      }
+
+      res.status(201).json({
+        message: "Write action performed",
+      });
+    });
+  } else {
+    return ErrorHandler(req, res, 400, "Invalid values");
+  }
 };
 
 module.exports = {

@@ -90,7 +90,36 @@ const writeData = async (req, res) => {
   }
 };
 
+//delete file from direcotry and database
+const deleteFile = async (req, res) => {
+  const { _id } = req.body;
+
+  //check if id is provided
+  if (!_id) {
+    return ErrorHandler(req, res, 400, "Id is not provided");
+  } else {
+    //find file in database
+    const text = await Text.findById(_id);
+
+    //check if file with given id is found in database
+    if (!text) {
+      return ErrorHandler(req, res, 404, "File not found");
+    } else {
+      fs.unlinkSync(fileDir + _id + ".txt", function (err) {
+        if (err) {
+          console.log(err);
+        }
+      });
+      await Text.deleteOne({ _id: _id });
+      res.status(200).json({
+        message: "file deleted",
+      });
+    }
+  }
+};
+
 module.exports = {
   fetchData,
   writeData,
+  deleteFile,
 };

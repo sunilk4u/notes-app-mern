@@ -6,12 +6,13 @@ const LoginForm = () => {
   return (
     <div className="login_form">
       <h6 className="login_label">Login</h6>
-      <TextField id="filled-basic" label="Email" variant="filled" />
+      <TextField id="filled-basic" label="Email" variant="filled" helperText="Enter a valid email" />
       <TextField
         id="filled-basic"
         label="Password"
         variant="filled"
         type="password"
+        helperText="Password must contain 8 chars and a number"
       />
       <Button variant="contained">Log in</Button>
     </div>

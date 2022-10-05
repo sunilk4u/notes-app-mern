@@ -1,0 +1,12 @@
+.notes_panel{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    max-width: 840px;
+}
+.notes_panel > * {
+    margin: 1rem;
+}
+.notes_action_buttons > *{
+    margin: 0 1rem;
+}

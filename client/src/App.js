@@ -3,6 +3,7 @@ import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header"
 import UserDetails from "./components/UserDetails/UserDetails";
 import LoginPage from "./pages/Login/LoginPage";
+import NotesPage from "./pages/Notes/NotesPage"
 import SignupPage from "./pages/Signup/SignupPage";
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
           <Route exact path="/" element={<LoginPage />} />
           <Route exact path="/signup" element={<SignupPage />} />
           <Route exact path="/user" element={<UserDetails />} />
+          <Route exact path="/notes" element={<NotesPage />} />
         </Routes>
 
         <Footer />

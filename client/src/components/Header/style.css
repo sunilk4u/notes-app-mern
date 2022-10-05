@@ -12,7 +12,16 @@
   align-items: center;
   justify-content: space-between;
 }
-.auth_buttons{
-    display: flex;
-    gap: 10px;
+.auth_buttons {
+  display: flex;
+  gap: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .header_logo {
+    font-size: 1.5rem;
+  }
+  .header.container > * {
+    margin: 10px;
+  }
 }

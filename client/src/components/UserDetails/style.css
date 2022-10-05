@@ -20,7 +20,7 @@
     flex-direction: column;
 }
 .details > * {
-    margin: 7px 0;
+    margin: 7px 0 !important;
 }
 .detail_actions{
     display: flex;
@@ -28,5 +28,5 @@
     justify-content: center;
 }
 .detail_actions > * {
-    margin: 5px;
+    margin: 5px !important;
 }

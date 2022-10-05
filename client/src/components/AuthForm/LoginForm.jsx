@@ -6,8 +6,15 @@ const LoginForm = () => {
   return (
     <div className="login_form">
       <h6 className="login_label">Login</h6>
-      <TextField id="filled-basic" label="Email" variant="filled" helperText="Enter a valid email" />
       <TextField
+        required
+        id="filled-basic"
+        label="Email"
+        variant="filled"
+        helperText="Enter a valid email"
+      />
+      <TextField
+        required
         id="filled-basic"
         label="Password"
         variant="filled"

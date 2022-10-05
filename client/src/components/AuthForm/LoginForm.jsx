@@ -5,13 +5,15 @@ import "./style.css";
 const LoginForm = () => {
   return (
     <div className="login_form">
-      <div className="container">
-        <div className="form">
-          <TextField id="filled-basic" label="Email" variant="filled" />
-          <TextField id="filled-basic" label="Password" variant="filled" type="password" />
-          <Button variant="contained">Log in</Button>
-        </div>
-      </div>
+      <h6 className="login_label">Login</h6>
+      <TextField id="filled-basic" label="Email" variant="filled" />
+      <TextField
+        id="filled-basic"
+        label="Password"
+        variant="filled"
+        type="password"
+      />
+      <Button variant="contained">Log in</Button>
     </div>
   );
 };

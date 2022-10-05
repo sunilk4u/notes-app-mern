@@ -1,0 +1,14 @@
+.login_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    width: 320px;
+    max-width: 320px;
+    max-height: 420px;
+}
+.login_label{
+    font-size: 2rem;
+    font-weight: 600;
+    margin: auto;
+}

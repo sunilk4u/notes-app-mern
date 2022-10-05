@@ -1,0 +1,32 @@
+.user_details {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+}
+.user_details > * {
+    margin: 1.5rem;
+}
+.avatar{
+    width: 5rem;
+    height: 5rem;
+    margin: 10px auto;
+}
+.avatar_section {
+    display: flex;
+    flex-direction: column;
+}
+.details{
+    display: flex;
+    flex-direction: column;
+}
+.details > * {
+    margin: 7px 0;
+}
+.detail_actions{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.detail_actions > * {
+    margin: 5px;
+}

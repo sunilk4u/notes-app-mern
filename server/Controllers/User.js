@@ -1,5 +1,7 @@
 const User = require("../Models/User");
 const ErrorHandler = require("../Utils/ErrorHandler");
+const bcrypt = require("bcrypt");
+const generateToken = require("../Utils/GenerateToken");
 
 //get user from the database
 const loginUser = async (req, res) => {
@@ -10,16 +12,26 @@ const loginUser = async (req, res) => {
 
     //check if user is present in database
     if (user) {
-      if (password === user.password) {
-        res.status(200).json({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-        });
+      const matchPassword = await bcrypt.compare(password, user.password);
+
+      if (matchPassword) {
+        let token = generateToken(user);
+
+        res
+          .status(200)
+          .cookie("token", token, {
+            httpOnly: true,
+            expires: new Date(Date.now() + 9000000),
+          })
+          .json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+          });
       } else {
         res.status(401).json({
           status: 401,
-          message: "Password did not match",
+          message: "Credentials did not match",
         });
       }
     } else {

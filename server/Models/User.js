@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 //user collection schema
 const userSchema = new mongoose.Schema(
@@ -28,6 +29,19 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+//hash password before saving it into the database
+userSchema.pre("save", async function (next) {
+  let user = this;
+
+  if (!user.isModified("password")) return next();
+
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(user.password, salt);
+
+  user.password = hash;
+  next();
+});
 
 //create user model
 const User = mongoose.model("user", userSchema);

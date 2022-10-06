@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+var cookieParser = require('cookie-parser')
 const reqLogger = require("./Middlewares/RequestLogger");
 const db_connect = require("./Configs/db_config");
 const userRouter = require("./Routes/User");
@@ -12,6 +13,7 @@ db_connect();
 
 //middlewares
 app.use(express.json());
+app.use(cookieParser());
 app.use(reqLogger);
 
 //Routes

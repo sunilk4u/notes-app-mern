@@ -1,7 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-var cookieParser = require('cookie-parser')
+var cors = require("cors");
+var cookieParser = require("cookie-parser");
 const reqLogger = require("./Middlewares/RequestLogger");
 const db_connect = require("./Configs/db_config");
 const userRouter = require("./Routes/User");
@@ -12,6 +13,12 @@ const port = process.env.PORT || 5000;
 db_connect();
 
 //middlewares
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    optionsSuccessStatus: 200,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(reqLogger);

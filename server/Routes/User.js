@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../Middlewares/VerifyToken");
 const {
   loginUser,
   signUpUser,
@@ -14,7 +15,7 @@ router.post("/login", loginUser);
 router.post("/register", signUpUser);
 
 //update user data in database
-router.patch("/update", updateUser);
+router.patch("/update", verifyToken, updateUser);
 
 //delete user from the database
 router.delete("/deregister", deleteUser);

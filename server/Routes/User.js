@@ -7,10 +7,14 @@ const {
   updateUser,
   deleteUser,
   userDetails,
+  userLogout,
 } = require("../Controllers/User");
 
 //get user from the database
 router.post("/login", loginUser);
+
+//logout user and remove auth token
+router.post("/logout", userLogout);
 
 //get user about details from the database
 router.post("/details", verifyToken, userDetails);

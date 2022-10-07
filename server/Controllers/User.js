@@ -51,8 +51,8 @@ const userDetails = async (req, res) => {
   const { _id } = req.body;
 
   //if id is not provided return error
-  if(!_id){
-    return ErrorHandler(req, res, 400, "Invalid fields")
+  if (!_id) {
+    return ErrorHandler(req, res, 400, "Invalid fields");
   }
 
   const user = await User.findById(_id);
@@ -197,10 +197,24 @@ const deleteUser = async (req, res) => {
   }
 };
 
+//logout user and remove auth token
+const userLogout = async (req, res) => {
+  res
+    .status(200)
+    .cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1),
+    })
+    .json({
+      message: "Logged out",
+    });
+};
+
 module.exports = {
   loginUser,
   signUpUser,
   updateUser,
   deleteUser,
   userDetails,
+  userLogout,
 };

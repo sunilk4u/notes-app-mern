@@ -97,7 +97,7 @@ const signUpUser = async (req, res) => {
 
 //update user in database
 const updateUser = async (req, res) => {
-  const { _id, name, email, password } = req.body;
+  const { _id, name, email, password, about } = req.body;
 
   //if id is not provided then reject the request
   if (!_id) {
@@ -128,6 +128,10 @@ const updateUser = async (req, res) => {
       //if password is provided and validates then update name
       if (password && (password.length < 8 || !/\d/.test(password))) {
         user.password = password;
+      }
+      //if about me is provided then update
+      if (about) {
+        user.about = about;
       }
 
       //after updating values save the data in database

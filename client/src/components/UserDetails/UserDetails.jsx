@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, Button, TextField } from "@mui/material";
 import avatar from "../../assets/default-avatar.png";
 import "./style.css";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { userDetails } from "../../redux/userSlice";
 
 const UserDetails = () => {
   const [edit, setEdit] = useState(true);
-  const { name, email, password, about } = useSelector((state) => state.user);
+  const { _id, name, email, about } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
     name: name,
     email: email,
-    password: password,
     about: about,
   });
+
+  //when page loads then load user data
+  useEffect(() => {
+    dispatch(userDetails({ _id }));
+  }, []);
+
+  //when about fetch is complete then render the component again
+  useEffect(() => {
+    setFormValues({ ...formValues, about: about });
+  }, [about]);
 
   return (
     <div className="user_details">
@@ -39,18 +50,6 @@ const UserDetails = () => {
             setFormValues({ ...formValues, name: e.currentTarget.value })
           }
           defaultValue={formValues.name}
-        />
-        <TextField
-          disabled={edit}
-          id="password"
-          label="Password"
-          type="password"
-          variant="filled"
-          value={formValues.password}
-          onChange={(e) =>
-            setFormValues({ ...formValues, password: e.currentTarget.value })
-          }
-          defaultValue={formValues.password}
         />
         <TextField
           disabled={edit}

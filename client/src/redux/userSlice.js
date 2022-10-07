@@ -33,11 +33,27 @@ export const userSignup = createAsyncThunk(
   }
 );
 
+//get user details
+export const userDetails = createAsyncThunk(
+  "user/details",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userRequest.post("/details", data);
+      return response;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
     isLoggedIn: false,
-    user_id: "",
+    _id: "",
     name: "",
     about: "",
     password: "",
@@ -57,11 +73,9 @@ export const userSlice = createSlice({
     [checkLogin.fulfilled]: (state, action) => {
       state.status = "fulfiiled";
       state.isLoggedIn = true;
-      state.user_id = action.payload.data._id;
+      state._id = action.payload.data._id;
       state.name = action.payload.data.name;
       state.email = action.payload.data.email;
-      state.about = action.payload.data.about;
-      state.password = action.payload.data.password;
     },
     [checkLogin.rejected]: (state, action) => {
       state.status = "error";
@@ -73,13 +87,24 @@ export const userSlice = createSlice({
     [userSignup.fulfilled]: (state, action) => {
       state.status = "fulfiiled";
       state.isLoggedIn = true;
-      state.user_id = action.payload.data._id;
+      state._id = action.payload.data._id;
       state.name = action.payload.data.name;
       state.email = action.payload.data.email;
-      state.about = action.payload.data.about;
-      state.password = action.payload.data.password;
     },
     [userSignup.rejected]: (state, action) => {
+      state.status = "error";
+      state.error_message = action.payload;
+    },
+
+    [userDetails.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [userDetails.fulfilled]: (state, action) => {
+      state.status = "fulfiiled";
+      state._id = action.payload.data._id;
+      state.about = action.payload.data.about;
+    },
+    [userDetails.rejected]: (state, action) => {
       state.status = "error";
       state.error_message = action.payload;
     },

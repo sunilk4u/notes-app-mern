@@ -1,24 +1,39 @@
 import React from "react";
-import { Button, TextField } from "@mui/material";
+import { Alert, Button, TextField } from "@mui/material";
 import "./style.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { checkLogin } from "../../redux/userSlice";
 
 const LoginForm = () => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
-  const status = useSelector((state) => state.user.status);
+  const { status, error_message, isLoggedIn } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
 
   //perform login operation
   const handleLogin = () => {
-    if (status === "idle") {
+    if (status === "pending") {
+      return;
+    } else {
       dispatch(checkLogin(formValues));
     }
   };
 
+  //is logged in as user then redirect to notes page
+  if (isLoggedIn) {
+    return <Navigate to="/notes" />;
+  }
+
   return (
     <div className="login_form">
+      {status === "error" && (
+        <Alert severity="error">
+          {error_message || "cannot connect to server"}
+        </Alert>
+      )}
       <h6 className="login_label">Login</h6>
       <TextField
         required

@@ -11,9 +11,14 @@ const HeaderMenu = () => {
   //if logged in then show user account button
   if (isLoggedIn) {
     return (
-      <Button variant="outlined" component={Link} to="/user">
-        Account
-      </Button>
+      <>
+        <Button variant="outlined" component={Link} to="/user">
+          Account
+        </Button>
+        <Button variant="outlined" component={Link} to="/notes">
+          Notes
+        </Button>
+      </>
     );
   } else {
     return (

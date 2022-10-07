@@ -13,21 +13,21 @@ const UserDetails = () => {
       <div className="details">
         <TextField
           disabled
-          id="filled-disabled"
+          id="email"
           label="Email"
           variant="filled"
           defaultValue="from server"
         />
         <TextField
           disabled
-          id="outlined-disabled"
+          id="name"
           label="Name"
           variant="filled"
           defaultValue="from server"
         />
         <TextField
           disabled
-          id="filled-disabled"
+          id="password"
           label="Password"
           type="password"
           variant="filled"
@@ -35,7 +35,7 @@ const UserDetails = () => {
         />
         <TextField
           disabled
-          id="filled-disabled"
+          id="about-me"
           label="About me"
           variant="filled"
           defaultValue="from server"

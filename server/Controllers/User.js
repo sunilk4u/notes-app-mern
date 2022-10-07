@@ -69,7 +69,7 @@ const signUpUser = async (req, res) => {
   //check if user is already present
   User.findOne({ email: email }, (err, user) => {
     if (user) {
-      return ErrorHandler(req, res, 400, "User is already registered");
+      return ErrorHandler(req, res, 400, "Email is already registered");
     } else if (err) {
       return ErrorHandler(req, res, 500, err.message);
     } else {

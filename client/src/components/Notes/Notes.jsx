@@ -18,6 +18,10 @@ const Notes = () => {
 
   return (
     <div className="notes_panel">
+      <div className="add_note">
+        <TextField id="standard" label="Add New Note" variant="outlined" />
+        <Button variant="contained">Add</Button>
+      </div>
       <FormControl className="notes_select">
         <InputLabel id="demo-simple-select-label">Choose your note</InputLabel>
         <Select

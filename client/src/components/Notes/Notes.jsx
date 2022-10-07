@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {
+  Alert,
   Button,
   FormControl,
   InputLabel,
@@ -7,10 +8,27 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
 import "./style.css";
+import { createFile } from "../../redux/noteSlice";
 
 const Notes = () => {
-  const [age, setAge] = React.useState("");
+  const [age, setAge] = useState("");
+  const [filename, setFilename] = useState("");
+  const user_id = useSelector((state) => state.user._id);
+  const { _id, file_name, data, status, message } = useSelector(
+    (state) => state.note
+  );
+  const dispatch = useDispatch();
+
+  //create a new file on button click
+  const handleFilename = () => {
+    if (status === "pending") {
+      return;
+    } else {
+      dispatch(createFile({ file_name: filename, user_id }));
+    }
+  };
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -18,9 +36,27 @@ const Notes = () => {
 
   return (
     <div className="notes_panel">
+      {status === "error" && (
+        <Alert severity="error">
+          {message || "cannot connect to server"}
+        </Alert>
+      )}
+      {status === "fulfilled" && (
+        <Alert severity="success">
+          {message || "cannot connect to server"}
+        </Alert>
+      )}
       <div className="add_note">
-        <TextField id="standard" label="Add New Note" variant="outlined" />
-        <Button variant="contained">Add</Button>
+        <TextField
+          id="standard"
+          label="Add New Note"
+          variant="outlined"
+          value={filename}
+          onChange={(e) => setFilename(e.currentTarget.value)}
+        />
+        <Button variant="contained" onClick={handleFilename}>
+          Add
+        </Button>
       </div>
       <FormControl className="notes_select">
         <InputLabel id="demo-simple-select-label">Choose your note</InputLabel>

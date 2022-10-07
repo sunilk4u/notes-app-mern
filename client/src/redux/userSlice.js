@@ -38,6 +38,10 @@ export const userSlice = createSlice({
   initialState: {
     isLoggedIn: false,
     user_id: "",
+    name: "",
+    about: "",
+    password: "",
+    email: "",
     status: "idle", //idle, pending, fulfilled, error
     error_message: "",
   },
@@ -54,6 +58,10 @@ export const userSlice = createSlice({
       state.status = "fulfiiled";
       state.isLoggedIn = true;
       state.user_id = action.payload.data._id;
+      state.name = action.payload.data.name;
+      state.email = action.payload.data.email;
+      state.about = action.payload.data.about;
+      state.password = action.payload.data.password;
     },
     [checkLogin.rejected]: (state, action) => {
       state.status = "error";
@@ -63,9 +71,13 @@ export const userSlice = createSlice({
       state.status = "pending";
     },
     [userSignup.fulfilled]: (state, action) => {
-      state.status = "fulfilled";
+      state.status = "fulfiiled";
       state.isLoggedIn = true;
       state.user_id = action.payload.data._id;
+      state.name = action.payload.data.name;
+      state.email = action.payload.data.email;
+      state.about = action.payload.data.about;
+      state.password = action.payload.data.password;
     },
     [userSignup.rejected]: (state, action) => {
       state.status = "error";

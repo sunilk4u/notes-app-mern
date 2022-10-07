@@ -15,6 +15,7 @@ export const userSlice = createSlice({
     isLoggedIn: false,
     user_id: "",
     status: "idle", //idle, pending, fulfilled, error
+    error_message: ""
   },
   reducers: {
     decrement: (state) => {

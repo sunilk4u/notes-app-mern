@@ -26,6 +26,6 @@ router.post("/register", signUpUser);
 router.patch("/update", verifyToken, updateUser);
 
 //delete user from the database
-router.delete("/deregister", deleteUser);
+router.delete("/deregister", verifyToken, deleteUser);
 
 module.exports = router;

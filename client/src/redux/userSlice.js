@@ -17,6 +17,22 @@ export const checkLogin = createAsyncThunk(
   }
 );
 
+//sign up user
+export const userSignup = createAsyncThunk(
+  "user/signup",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userRequest.post("/register", data);
+      return response;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -37,9 +53,21 @@ export const userSlice = createSlice({
     [checkLogin.fulfilled]: (state, action) => {
       state.status = "fulfiiled";
       state.isLoggedIn = true;
-      state.user_id = action.payload._id;
+      state.user_id = action.payload.data._id;
     },
     [checkLogin.rejected]: (state, action) => {
+      state.status = "error";
+      state.error_message = action.payload;
+    },
+    [userSignup.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [userSignup.fulfilled]: (state, action) => {
+      state.status = "fulfilled";
+      state.isLoggedIn = true;
+      state.user_id = action.payload.data._id;
+    },
+    [userSignup.rejected]: (state, action) => {
       state.status = "error";
       state.error_message = action.payload;
     },

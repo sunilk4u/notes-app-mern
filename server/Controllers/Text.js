@@ -32,6 +32,27 @@ const fetchData = async (req, res) => {
   }
 };
 
+//fetch all notes list from user
+const fetchAll = async (req, res) => {
+  const { _id } = req.body;
+
+  //check if inputs ar valid
+  if (!_id) {
+    return ErrorHandler(req, res, 400, "Invalid fields");
+  }
+
+  const user = await User.findById(_id);
+
+  //check user is in database
+  if (!user) {
+    return ErrorHandler(req, res, 404, "User not found");
+  }
+
+  res.status(200).json({
+    notes: user.notes,
+  });
+};
+
 //write text data into file
 const writeData = async (req, res) => {
   const { _id, file_name, data, user_id } = req.body;
@@ -163,4 +184,5 @@ module.exports = {
   fetchData,
   writeData,
   deleteFile,
+  fetchAll,
 };

@@ -40,6 +40,11 @@ const writeData = async (req, res) => {
   if (_id && data && file_name) {
     //change file name
     const text = await Text.findById(_id);
+
+    //check if document is present
+    if(!text) {
+      return ErrorHandler(req, res, 404, "Document not found")
+    }
     text.file_name = file_name;
     text.save((err) => {
       if (err) {

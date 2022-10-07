@@ -26,6 +26,9 @@ const userSchema = new mongoose.Schema(
     about: {
       type: String,
     },
+    notes: {
+      type: [String],
+    }
   },
   {
     timestamps: true,

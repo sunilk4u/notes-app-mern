@@ -1,6 +1,7 @@
 const fs = require("fs");
 const ErrorHandler = require("../Utils/ErrorHandler");
 const Text = require("../Models/Text");
+const User = require("../Models/User");
 const fileDir = "./Data/";
 
 //get text data into file
@@ -33,17 +34,29 @@ const fetchData = async (req, res) => {
 
 //write text data into file
 const writeData = async (req, res) => {
-  const { _id, file_name, data } = req.body;
+  const { _id, file_name, data, user_id } = req.body;
+
+  //if user_id is not provided then respond with error
+  if (!user_id) {
+    return ErrorHandler(req, res, 400, "User not logged in");
+  }
+
+  //find user in database
+  const user = await User.findById(user_id);
+
+  //if user is not found
+  if (!user) {
+    return ErrorHandler(req, res, 404, "user not found");
+  }
 
   //check if text file with id is already present and payload data is present
   //if both condition are true then perform write operation on existing file.
   if (_id && data && file_name) {
-    //change file name
     const text = await Text.findById(_id);
 
     //check if document is present
-    if(!text) {
-      return ErrorHandler(req, res, 404, "Document not found")
+    if (!text) {
+      return ErrorHandler(req, res, 404, "Document not found");
     }
     text.file_name = file_name;
     text.save((err) => {
@@ -57,6 +70,15 @@ const writeData = async (req, res) => {
       if (err) {
         console.log(err);
         return ErrorHandler(req, res, 500, "cannot write data to file");
+      }
+    });
+
+    //link text to user profile
+    user.notes.push(_id);
+    user.save((err) => {
+      if (err) {
+        console.log(err);
+        return ErrorHandler(req, res, 500, err.message);
       }
     });
 
@@ -87,6 +109,15 @@ const writeData = async (req, res) => {
       if (err) {
         console.log(err);
         return ErrorHandler(req, res, 500, "cannot write data to file");
+      }
+    });
+
+    //link text to user profile
+    user.notes.push(text._id);
+    user.save((err) => {
+      if (err) {
+        console.log(err);
+        return ErrorHandler(req, res, 500, err.message);
       }
     });
 

@@ -4,7 +4,7 @@ import avatar from "../../assets/default-avatar.png";
 import "./style.css";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { userDetails } from "../../redux/userSlice";
+import { userDetails, userUpdate } from "../../redux/userSlice";
 
 const UserDetails = () => {
   const [edit, setEdit] = useState(true);
@@ -23,8 +23,25 @@ const UserDetails = () => {
 
   //when about fetch is complete then render the component again
   useEffect(() => {
-    setFormValues({ ...formValues, about: about });
-  }, [about]);
+    setFormValues({ ...formValues, about: about, name: name, email: email });
+  }, [about, name, email]);
+
+  //when save button is clicked save the data
+  const saveHandler = () => {
+    if(edit === true){
+      return
+    }
+    dispatch(
+      userUpdate({
+        _id,
+        name: formValues.name,
+        email: formValues.email,
+        about: formValues.about,
+      })
+    );
+    setEdit(true);
+    dispatch(userDetails({ _id }));
+  };
 
   return (
     <div className="user_details">
@@ -67,7 +84,9 @@ const UserDetails = () => {
         <Button variant="outlined" onClick={() => setEdit((prev) => !prev)}>
           Edit Details
         </Button>
-        <Button variant="contained">Save</Button>
+        <Button variant="contained" onClick={saveHandler}>
+          Save
+        </Button>
       </div>
     </div>
   );

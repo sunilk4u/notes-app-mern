@@ -49,6 +49,23 @@ export const userDetails = createAsyncThunk(
   }
 );
 
+//get user details
+export const userUpdate = createAsyncThunk(
+  "user/update",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userRequest.patch("/update", data);
+      console.log(response);
+      return response;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -101,8 +118,8 @@ export const userSlice = createSlice({
     },
     [userDetails.fulfilled]: (state, action) => {
       state.status = "fulfiiled";
-      state._id = action.payload.data._id;
       state.about = action.payload.data.about;
+      state.name = action.payload.data.name;
     },
     [userDetails.rejected]: (state, action) => {
       state.status = "error";

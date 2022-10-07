@@ -6,10 +6,14 @@ const {
   signUpUser,
   updateUser,
   deleteUser,
+  userDetails,
 } = require("../Controllers/User");
 
 //get user from the database
 router.post("/login", loginUser);
+
+//get user about details from the database
+router.post("/details", verifyToken, userDetails);
 
 //create user in the databse
 router.post("/register", signUpUser);

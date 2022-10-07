@@ -46,6 +46,30 @@ const loginUser = async (req, res) => {
   }
 };
 
+//get user page details
+const userDetails = async (req, res) => {
+  const { _id } = req.body;
+
+  //if id is not provided return error
+  if(!_id){
+    return ErrorHandler(req, res, 400, "Invalid fields")
+  }
+
+  const user = await User.findById(_id);
+
+  //check if user is present in database
+  if (!user) {
+    return ErrorHandler(req, res, 404, "user not found");
+  } else {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      about: user.about,
+    });
+  }
+};
+
 //create user in database
 const signUpUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -144,7 +168,6 @@ const updateUser = async (req, res) => {
           _id: user._id,
           name: user.name,
           email: user.email,
-          password: password,
         });
       });
     }
@@ -179,4 +202,5 @@ module.exports = {
   signUpUser,
   updateUser,
   deleteUser,
+  userDetails,
 };

@@ -1,11 +1,12 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./style.css";
+import { logout, userLogout } from "../../redux/userSlice";
 
 //header menu items
-const HeaderMenu = () => {
+const HeaderMenu = ({ logout }) => {
   const { isLoggedIn } = useSelector((state) => state.user);
 
   //if logged in then show user account button
@@ -17,6 +18,9 @@ const HeaderMenu = () => {
         </Button>
         <Button variant="outlined" component={Link} to="/notes">
           Notes
+        </Button>
+        <Button variant="contained" component={Link} to="/" onClick={logout}>
+          Logout
         </Button>
       </>
     );
@@ -35,12 +39,20 @@ const HeaderMenu = () => {
 };
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  //logout and clear state when clicked on logout button
+  const logoutHandler = () => {
+    dispatch(userLogout())
+    dispatch(logout())
+  };
+
   return (
     <div className="header">
       <div className="header container">
         <div className="header_logo">My Notes</div>
         <div className="auth_buttons">
-          <HeaderMenu />
+          <HeaderMenu logout={logoutHandler} />
         </div>
       </div>
     </div>

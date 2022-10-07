@@ -55,7 +55,22 @@ export const userUpdate = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await userRequest.patch("/update", data);
-      console.log(response);
+      return response;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
+//logout user
+export const userLogout = createAsyncThunk(
+  "user/logout",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userRequest.patch("/logout");
       return response;
     } catch (err) {
       if (!err.response) {
@@ -73,14 +88,17 @@ export const userSlice = createSlice({
     _id: "",
     name: "",
     about: "",
-    password: "",
     email: "",
     status: "idle", //idle, pending, fulfilled, error
     error_message: "",
   },
   reducers: {
-    setStatus: (state) => {
+    logout: (state) => {
       state.status = "idle";
+      state.isLoggedIn = false;
+      state._id = "";
+      state.name = "";
+      state.email = "";
     },
   },
   extraReducers: {
@@ -128,6 +146,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setStatus } = userSlice.actions;
+export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;

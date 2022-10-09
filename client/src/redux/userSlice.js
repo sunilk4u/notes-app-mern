@@ -70,7 +70,7 @@ export const userLogout = createAsyncThunk(
   "user/logout",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await userRequest.patch("/logout");
+      const response = await userRequest.post("/logout");
       return response;
     } catch (err) {
       if (!err.response) {

@@ -10,20 +10,8 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import "./style.css";
-import { createFile, fetchAll } from "../../redux/noteSlice";
+import { createFile, fetch, fetchAll, setData } from "../../redux/noteSlice";
 import { useEffect } from "react";
-
-//list of notes with name for selection dropdown
-const SelectDropdown = ({ notes }) => {
-  console.log(notes);
-  return (
-    <>
-      <MenuItem value={10}>Ten</MenuItem>
-      <MenuItem value={10}>Ten</MenuItem>
-      <MenuItem value={10}>Ten</MenuItem>
-    </>
-  );
-};
 
 const Notes = () => {
   const [filename, setFilename] = useState("");
@@ -36,7 +24,7 @@ const Notes = () => {
 
   //get all list of notes
   useEffect(() => {
-    if (status === "createFile_fulfilled") {
+    if (status === "createFile_fulfilled" || status === "idle") {
       dispatch(fetchAll({ _id: user_id }));
     }
   }, [_id]);
@@ -51,8 +39,11 @@ const Notes = () => {
   };
 
   //handle current file selection
-  const handleFileSelect = (event) => {
-    setFileSelect(event.target.value);
+  const handleFileSelect = (e) => {
+    setFileSelect(e.target.value);
+    
+    //fetch the file data
+    dispatch(fetch({ _id: e.target.value}))
   };
 
   return (
@@ -96,15 +87,17 @@ const Notes = () => {
           sx={{ width: "100%" }}
           rows={5}
           id="filled-textarea"
-          label="Write your note"
           placeholder="Bla Bla Bla"
           multiline
           variant="filled"
+          value={data}
+          onChange={e => dispatch(setData(e.currentTarget.value))}
         />
       </div>
       <div className="notes_action_buttons">
         <Button variant="contained">Save Note</Button>
         <Button variant="outlined">Download Note</Button>
+        <Button variant="outlined">Delete</Button>
       </div>
     </div>
   );

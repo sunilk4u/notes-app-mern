@@ -54,7 +54,11 @@ export const noteSlice = createSlice({
     note: {},
     notes: [],
   },
-  //   reducers: {},
+  reducers: {
+    setData: (state, action) => {
+      state.data = action.payload;
+    },
+  },
   extraReducers: {
     [createFile.pending]: (state, action) => {
       state.status = "createFile_pending";
@@ -63,7 +67,6 @@ export const noteSlice = createSlice({
       state.status = "createFile_fulfilled";
       state._id = action.payload.data._id;
       state.file_name = action.payload.data.file_name;
-      state.data = action.payload.data.data;
       state.message = "file created successfully";
     },
     [createFile.rejected]: (state, action) => {
@@ -87,6 +90,7 @@ export const noteSlice = createSlice({
     [fetch.fulfilled]: (state, action) => {
       state.status = "fetch_fulfilled";
       state.note = action.payload.data;
+      state.data = action.payload.data.data;
     },
     [fetch.rejected]: (state, action) => {
       state.status = "fetch_error";
@@ -95,6 +99,6 @@ export const noteSlice = createSlice({
   },
 });
 
-// export const {} = noteSlice.actions;
+export const { setData } = noteSlice.actions;
 
 export default noteSlice.reducer;

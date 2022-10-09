@@ -10,16 +10,36 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import "./style.css";
-import { createFile } from "../../redux/noteSlice";
+import { createFile, fetchAll } from "../../redux/noteSlice";
+import { useEffect } from "react";
+
+//list of notes with name for selection dropdown
+const SelectDropdown = ({ notes }) => {
+  console.log(notes);
+  return (
+    <>
+      <MenuItem value={10}>Ten</MenuItem>
+      <MenuItem value={10}>Ten</MenuItem>
+      <MenuItem value={10}>Ten</MenuItem>
+    </>
+  );
+};
 
 const Notes = () => {
-  const [age, setAge] = useState("");
   const [filename, setFilename] = useState("");
+  const [fileSelect, setFileSelect] = useState("");
   const user_id = useSelector((state) => state.user._id);
-  const { _id, file_name, data, status, message } = useSelector(
+  const { _id, file_name, data, status, message, notes } = useSelector(
     (state) => state.note
   );
   const dispatch = useDispatch();
+
+  //get all list of notes
+  useEffect(() => {
+    if (status === "createFile_fulfilled") {
+      dispatch(fetchAll({ _id: user_id }));
+    }
+  }, [_id]);
 
   //create a new file on button click
   const handleFilename = () => {
@@ -30,18 +50,17 @@ const Notes = () => {
     }
   };
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  //handle current file selection
+  const handleFileSelect = (event) => {
+    setFileSelect(event.target.value);
   };
 
   return (
     <div className="notes_panel">
       {status === "error" && (
-        <Alert severity="error">
-          {message || "cannot connect to server"}
-        </Alert>
+        <Alert severity="error">{message || "cannot connect to server"}</Alert>
       )}
-      {status === "fulfilled" && (
+      {status === "createFile_fulfilled" && (
         <Alert severity="success">
           {message || "cannot connect to server"}
         </Alert>
@@ -63,13 +82,13 @@ const Notes = () => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={age}
+          value={fileSelect}
           label="Notes"
-          onChange={handleChange}
+          onChange={handleFileSelect}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {notes.map((note) => {
+            return <MenuItem value={note._id}>{note.file_name}</MenuItem>;
+          })}
         </Select>
       </FormControl>
       <div className="text_area">

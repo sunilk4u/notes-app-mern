@@ -49,7 +49,7 @@ export const userDetails = createAsyncThunk(
   }
 );
 
-//get user details
+//update user details
 export const userUpdate = createAsyncThunk(
   "user/update",
   async (data, { rejectWithValue }) => {

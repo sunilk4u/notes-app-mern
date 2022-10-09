@@ -121,7 +121,7 @@ const signUpUser = async (req, res) => {
 
 //update user in database
 const updateUser = async (req, res) => {
-  const { _id, name, email, password, about } = req.body;
+  const { _id, name, password, about } = req.body;
 
   //if id is not provided then reject the request
   if (!_id) {
@@ -129,7 +129,7 @@ const updateUser = async (req, res) => {
       req,
       res,
       400,
-      "Request is rejected because of invalid user id."
+      "Invalid user id."
     );
   } else {
     const user = await User.findById(_id);
@@ -141,13 +141,6 @@ const updateUser = async (req, res) => {
       //if name is provided and validates then update name
       if (name && name.length > 3) {
         user.name = name;
-      }
-      //if email is provided and validates then update name
-      if (
-        email &&
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-      ) {
-        user.email = email;
       }
       //if password is provided and validates then update name
       if (password && (password.length < 8 || !/\d/.test(password))) {

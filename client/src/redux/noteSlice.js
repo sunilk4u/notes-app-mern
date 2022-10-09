@@ -43,20 +43,60 @@ export const fetch = createAsyncThunk(
   }
 );
 
+//save the note
+export const saveNote = createAsyncThunk(
+  "note/save",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await notesRequest.put("/write", data);
+      return response;
+    } catch (err) {
+      if (!err.response) throw err;
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
+//delete the note
+export const deleteNote = createAsyncThunk(
+  "note/delete",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await notesRequest.post("/delete", data);
+      return response;
+    } catch (err) {
+      if (!err.response) throw err;
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
+const intitialState = {
+  _id: "",
+  file_name: "",
+  data: "",
+  status: "idle", //idle, pending, fulfilled, error
+  message: "",
+  note: {},
+  notes: [],
+};
+
 export const noteSlice = createSlice({
   name: "note",
-  initialState: {
-    _id: "",
-    file_name: "",
-    data: "",
-    status: "idle", //idle, pending, fulfilled, error
-    message: "",
-    note: {},
-    notes: [],
-  },
+  initialState: intitialState,
   reducers: {
     setData: (state, action) => {
       state.data = action.payload;
+    },
+    resetData: (state, action) => {
+      return {
+        _id: "",
+        file_name: "",
+        data: "",
+        status: "idle",
+        message: "",
+        note: {},
+      };
     },
   },
   extraReducers: {
@@ -66,8 +106,8 @@ export const noteSlice = createSlice({
     [createFile.fulfilled]: (state, action) => {
       state.status = "createFile_fulfilled";
       state._id = action.payload.data._id;
-      state.file_name = action.payload.data.file_name;
       state.message = "file created successfully";
+      state.data = "";
     },
     [createFile.rejected]: (state, action) => {
       state.status = "createFile_error";
@@ -91,14 +131,30 @@ export const noteSlice = createSlice({
       state.status = "fetch_fulfilled";
       state.note = action.payload.data;
       state.data = action.payload.data.data;
+      state._id = action.payload.data._id;
+      state.file_name = action.payload.data.file_name;
     },
     [fetch.rejected]: (state, action) => {
       state.status = "fetch_error";
       state.message = action.payload;
     },
+    [saveNote.pending]: (state, action) => {
+      state.status = "saveNote_pending";
+    },
+    [saveNote.fulfilled]: (state, action) => {
+      state.status = "saveNote_fulfilled";
+      state.message = "Note Saved!";
+    },
+    [saveNote.rejected]: (state, action) => {
+      state.status = "saveNote_error";
+      state.message = action.payload;
+    },
+    [deleteNote.fulfilled]: (state, action) => {
+      state.status = "deleteNote_fulfilled";
+    },
   },
 });
 
-export const { setData } = noteSlice.actions;
+export const { setData, resetData } = noteSlice.actions;
 
 export default noteSlice.reducer;

@@ -10,20 +10,29 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import "./style.css";
-import { createFile, fetch, fetchAll, setData } from "../../redux/noteSlice";
+import {
+  createFile,
+  deleteNote,
+  fetch,
+  fetchAll,
+  resetData,
+  saveNote,
+  setData,
+} from "../../redux/noteSlice";
 import { useEffect } from "react";
 
 const Notes = () => {
   const [filename, setFilename] = useState("");
   const [fileSelect, setFileSelect] = useState("");
   const user_id = useSelector((state) => state.user._id);
-  const { _id, file_name, data, status, message, notes } = useSelector(
+  const { _id, data, status, message, notes } = useSelector(
     (state) => state.note
   );
   const dispatch = useDispatch();
 
-  //get all list of notes
+  //get all list of notes and current loaded file
   useEffect(() => {
+    setFileSelect(_id);
     if (status === "createFile_fulfilled" || status === "idle") {
       dispatch(fetchAll({ _id: user_id }));
     }
@@ -38,12 +47,23 @@ const Notes = () => {
     }
   };
 
+  //handle save note
+  const handleSaveNote = () => {
+    dispatch(saveNote({ _id, user_id, data }));
+  };
+
+  //handle delete note
+  const handleDeleteNote = () => {
+    dispatch(deleteNote({_id}))
+    dispatch(resetData())
+  }
+
   //handle current file selection
   const handleFileSelect = (e) => {
     setFileSelect(e.target.value);
-    
+
     //fetch the file data
-    dispatch(fetch({ _id: e.target.value}))
+    dispatch(fetch({ _id: e.target.value }));
   };
 
   return (
@@ -51,7 +71,8 @@ const Notes = () => {
       {status === "error" && (
         <Alert severity="error">{message || "cannot connect to server"}</Alert>
       )}
-      {status === "createFile_fulfilled" && (
+      {(status === "createFile_fulfilled" ||
+        status === "saveNote_fulfilled") && (
         <Alert severity="success">
           {message || "cannot connect to server"}
         </Alert>
@@ -91,13 +112,15 @@ const Notes = () => {
           multiline
           variant="filled"
           value={data}
-          onChange={e => dispatch(setData(e.currentTarget.value))}
+          onChange={(e) => dispatch(setData(e.currentTarget.value))}
         />
       </div>
       <div className="notes_action_buttons">
-        <Button variant="contained">Save Note</Button>
+        <Button variant="contained" onClick={handleSaveNote}>
+          Save Note
+        </Button>
         <Button variant="outlined">Download Note</Button>
-        <Button variant="outlined">Delete</Button>
+        <Button variant="outlined" onClick={handleDeleteNote}>Delete</Button>
       </div>
     </div>
   );

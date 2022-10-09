@@ -12,7 +12,7 @@ const fetchData = async (req, res) => {
   if (!_id) {
     return ErrorHandler(req, res, 400, "Text id not provided");
   } else {
-    const text = Text.findOne({ _id: _id });
+    const text = await Text.findOne({ _id: _id });
 
     //check if text file is present with given id
     if (!text) {
@@ -25,8 +25,11 @@ const fetchData = async (req, res) => {
           return ErrorHandler(req, res, 500, "Unable to read data");
         }
 
-        res.set("Content-Type", "text/plain");
-        res.status(200).send(data);
+        res.status(200).json({
+          _id: text._id,
+          file_name: text.name,
+          data: data,
+        });
       });
     }
   }
@@ -72,14 +75,13 @@ const writeData = async (req, res) => {
 
   //check if text file with id is already present and payload data is present
   //if both condition are true then perform write operation on existing file.
-  if (_id && data && file_name) {
+  if (_id && data) {
     const text = await Text.findById(_id);
 
     //check if document is present
     if (!text) {
       return ErrorHandler(req, res, 404, "Document not found");
     }
-    text.file_name = file_name;
     text.save((err) => {
       if (err) {
         return ErrorHandler(req, res, 500, err.message);
@@ -91,15 +93,6 @@ const writeData = async (req, res) => {
       if (err) {
         console.log(err);
         return ErrorHandler(req, res, 500, "cannot write data to file");
-      }
-    });
-
-    //link text to user profile
-    user.notes.push(_id);
-    user.save((err) => {
-      if (err) {
-        console.log(err);
-        return ErrorHandler(req, res, 500, err.message);
       }
     });
 
@@ -133,8 +126,8 @@ const writeData = async (req, res) => {
       }
     });
 
-    //link text to user profile
-    user.notes.push(text._id);
+    //link text file to user profile
+    user.notes.push({_id: text._id, file_name: file_name});
     user.save((err) => {
       if (err) {
         console.log(err);

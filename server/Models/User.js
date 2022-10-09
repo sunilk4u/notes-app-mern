@@ -26,9 +26,19 @@ const userSchema = new mongoose.Schema(
     about: {
       type: String,
     },
-    notes: {
-      type: [String],
-    }
+    notes: [
+      {
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Text",
+          required: true,
+        },
+        file_name: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

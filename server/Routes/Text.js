@@ -18,6 +18,6 @@ router.post("/fetchall", verifyToken, fetchAll);
 router.put("/write", verifyToken, writeData);
 
 //delete file
-router.delete("/delete", verifyToken, deleteFile);
+router.post("/delete", verifyToken, deleteFile);
 
 module.exports = router;

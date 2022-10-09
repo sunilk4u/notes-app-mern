@@ -127,7 +127,7 @@ const writeData = async (req, res) => {
     });
 
     //link text file to user profile
-    user.notes.push({_id: text._id, file_name: file_name});
+    user.notes.push({ _id: text._id, file_name: file_name });
     user.save((err) => {
       if (err) {
         console.log(err);
@@ -146,18 +146,21 @@ const writeData = async (req, res) => {
 
 //delete file from direcotry and database
 const deleteFile = async (req, res) => {
-  const { _id } = req.body;
+  const { _id, user_id } = req.body;
 
   //check if id is provided
-  if (!_id) {
-    return ErrorHandler(req, res, 400, "Id is not provided");
+  if (!_id || !user_id) {
+    return ErrorHandler(req, res, 400, "Invalid fields");
   } else {
     //find file in database
     const text = await Text.findById(_id);
 
+    //find user in database
+    const user = await User.findById(user_id);
+
     //check if file with given id is found in database
-    if (!text) {
-      return ErrorHandler(req, res, 404, "File not found");
+    if (!text || !user) {
+      return ErrorHandler(req, res, 404, "Details not found");
     } else {
       fs.unlinkSync(fileDir + _id + ".txt", function (err) {
         if (err) {
@@ -165,7 +168,19 @@ const deleteFile = async (req, res) => {
         }
       });
 
+      //delete file data from database
       await Text.deleteOne({ _id: _id });
+
+      //unlink file from user model
+      await User.updateOne(
+        { _id: user._id },
+        {
+          $pull: {
+            notes: { _id: text._id },
+          },
+        }
+      );
+
       res.status(200).json({
         message: "file deleted",
       });

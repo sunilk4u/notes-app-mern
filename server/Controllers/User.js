@@ -125,12 +125,7 @@ const updateUser = async (req, res) => {
 
   //if id is not provided then reject the request
   if (!_id) {
-    return ErrorHandler(
-      req,
-      res,
-      400,
-      "Invalid user id."
-    );
+    return ErrorHandler(req, res, 400, "Invalid user id.");
   } else {
     const user = await User.findById(_id);
 
@@ -203,6 +198,14 @@ const userLogout = async (req, res) => {
     });
 };
 
+//upload image of user
+const uploadImage = async (req, res) => {
+
+  res.status(200).json({
+    message: "file uploaded",
+  });
+};
+
 module.exports = {
   loginUser,
   signUpUser,
@@ -210,4 +213,5 @@ module.exports = {
   deleteUser,
   userDetails,
   userLogout,
+  uploadImage,
 };

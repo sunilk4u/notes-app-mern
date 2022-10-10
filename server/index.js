@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-var cors = require("cors");
-var cookieParser = require("cookie-parser");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
 const reqLogger = require("./Middlewares/RequestLogger");
 const db_connect = require("./Configs/db_config");
 const userRouter = require("./Routes/User");
@@ -20,6 +21,7 @@ app.use(
     credentials: true,
   })
 );
+app.use("/static", express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(reqLogger);

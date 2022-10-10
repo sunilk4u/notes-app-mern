@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./style.css";
 import { logout, userLogout } from "../../redux/userSlice";
+import { resetData } from "../../redux/noteSlice";
 
 //header menu items
 const HeaderMenu = ({ logout }) => {
@@ -45,6 +46,7 @@ const Header = () => {
   const logoutHandler = () => {
     dispatch(userLogout())
     dispatch(logout())
+    dispatch(resetData())
   };
 
   return (

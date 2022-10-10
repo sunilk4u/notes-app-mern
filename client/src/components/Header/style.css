@@ -22,6 +22,9 @@
     font-size: 1.5rem;
   }
   .header.container > * {
-    margin: 10px;
+    margin: 8px;
+  }
+  .auth_buttons  a{
+    font-size: 0.6rem;
   }
 }

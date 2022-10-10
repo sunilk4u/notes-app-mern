@@ -16,3 +16,11 @@
     justify-content: center;
     gap: 2rem;
 }
+
+@media only screen and (max-width: 600px) {
+    .notes_action_buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}

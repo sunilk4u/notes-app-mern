@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Avatar, Button, TextField } from "@mui/material";
-import avatar from "../../assets/default-avatar.png";
 import "./style.css";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -29,7 +28,9 @@ const UserDetails = () => {
 
   //when about fetch is complete then render the component again
   useEffect(() => {
-    setFormValues({ ...formValues, about: about, name: name, email: email });
+    setFormValues((formValues) => {
+      return { ...formValues, about: about, name: name, email: email };
+    });
   }, [about, name, email]);
 
   //when save button is clicked save the data

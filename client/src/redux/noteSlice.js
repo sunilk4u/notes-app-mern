@@ -78,10 +78,10 @@ export const downloadNote = createAsyncThunk(
     try {
       const response = await blobNotesRequest.get(`/download/${data}`);
       const file = window.URL.createObjectURL(new Blob([response.data]));
-      let a = document.createElement("a")
-      a.href = file
-      a.download = "file.txt"
-      a.click()
+      let a = document.createElement("a");
+      a.href = file;
+      a.download = "file.txt";
+      a.click();
       return response;
     } catch (err) {
       if (!err.response) throw err;
@@ -107,16 +107,7 @@ export const noteSlice = createSlice({
     setData: (state, action) => {
       state.data = action.payload;
     },
-    resetData: (state, action) => {
-      return {
-        _id: "",
-        file_name: "",
-        data: "",
-        status: "idle",
-        message: "",
-        note: {},
-      };
-    },
+    resetData: () => intitialState,
   },
   extraReducers: {
     [createFile.pending]: (state, action) => {

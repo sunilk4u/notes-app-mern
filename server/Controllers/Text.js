@@ -188,9 +188,29 @@ const deleteFile = async (req, res) => {
   }
 };
 
+//download file
+const downloadFile = async (req, res) => {
+  const { id } = req.params;
+
+  //check if fields are valid
+  console.log(id);
+  if (!id) {
+    return ErrorHandler(req, res, 400, "Invalid fields.");
+  } else {
+    res.setHeader("Content-Type", "application/octet-stream");
+    res.download(fileDir + id + ".txt", function (err) {
+      if (err) {
+        console.log(err);
+        return ErrorHandler(req, res, 500, "Cannot download file");
+      }
+    });
+  }
+};
+
 module.exports = {
   fetchData,
   writeData,
   deleteFile,
   fetchAll,
+  downloadFile,
 };

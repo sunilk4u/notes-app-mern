@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { notesRequest } from "../http";
+import { blobNotesRequest, notesRequest } from "../http";
 
 //create new file
 export const createFile = createAsyncThunk(
@@ -63,6 +63,25 @@ export const deleteNote = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await notesRequest.post("/delete", data);
+      return response;
+    } catch (err) {
+      if (!err.response) throw err;
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
+//download the note
+export const downloadNote = createAsyncThunk(
+  "note/download",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await blobNotesRequest.get(`/download/${data}`);
+      const file = window.URL.createObjectURL(new Blob([response.data]));
+      let a = document.createElement("a")
+      a.href = file
+      a.download = "file.txt"
+      a.click()
       return response;
     } catch (err) {
       if (!err.response) throw err;

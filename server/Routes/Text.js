@@ -5,6 +5,7 @@ const {
   writeData,
   deleteFile,
   fetchAll,
+  downloadFile
 } = require("../Controllers/Text");
 const verifyToken = require("../Middlewares/VerifyToken");
 
@@ -19,5 +20,8 @@ router.put("/write", verifyToken, writeData);
 
 //delete file
 router.post("/delete", verifyToken, deleteFile);
+
+//download file
+router.get("/download/:id", verifyToken, downloadFile);
 
 module.exports = router;

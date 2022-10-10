@@ -17,3 +17,13 @@ export const notesRequest = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+export const blobNotesRequest = axios.create({
+  baseURL: `${process.env.REACT_APP_API_URI}/api/text`,
+  timeout: 1000,
+  withCredentials: true,
+  responseType: "blob",
+  headers: {
+    "Content-Type": "application/octet-stream",
+  },
+});

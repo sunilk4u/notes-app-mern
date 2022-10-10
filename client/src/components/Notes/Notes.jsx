@@ -43,7 +43,7 @@ const Notes = () => {
     ) {
       dispatch(fetchAll({ _id: user_id }));
     }
-  }, [_id, status]);
+  }, [_id, status, dispatch, user_id]);
 
   //create a new file on button click
   const handleFilename = () => {

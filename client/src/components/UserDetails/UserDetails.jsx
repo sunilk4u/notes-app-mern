@@ -10,6 +10,7 @@ import {
   userDetails,
   userUpdate,
 } from "../../redux/userSlice";
+import { resetData } from "../../redux/noteSlice";
 
 const UserDetails = () => {
   const [edit, setEdit] = useState(true);
@@ -22,9 +23,9 @@ const UserDetails = () => {
   });
 
   //when page loads then load user data
-  useEffect(() => {
+  useEffect((_id) => {
     dispatch(userDetails({ _id }));
-  }, []);
+  }, [dispatch]);
 
   //when about fetch is complete then render the component again
   useEffect(() => {
@@ -54,6 +55,7 @@ const UserDetails = () => {
   const handleDelete = () => {
     dispatch(userDelete({ _id }));
     dispatch(logout());
+    dispatch(resetData());
   };
 
   //upload image handler

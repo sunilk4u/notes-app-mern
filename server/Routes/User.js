@@ -38,8 +38,8 @@ router.post("/logout", userLogout);
 //get user about details from the database
 router.post("/details", verifyToken, userDetails);
 
-//upload user imag
-router.post("/upload", [verifyToken, upload.single("file")], uploadImage);
+//upload user image
+router.post("/upload", upload.single("file"), uploadImage);
 
 //create user in the databse
 router.post("/register", signUpUser);

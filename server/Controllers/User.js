@@ -200,7 +200,6 @@ const userLogout = async (req, res) => {
 
 //upload image of user
 const uploadImage = async (req, res) => {
-
   res.status(200).json({
     message: "file uploaded",
   });

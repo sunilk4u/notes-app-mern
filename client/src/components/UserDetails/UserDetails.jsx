@@ -4,7 +4,12 @@ import avatar from "../../assets/default-avatar.png";
 import "./style.css";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { userDetails, userUpdate } from "../../redux/userSlice";
+import {
+  logout,
+  userDelete,
+  userDetails,
+  userUpdate,
+} from "../../redux/userSlice";
 
 const UserDetails = () => {
   const [edit, setEdit] = useState(true);
@@ -28,8 +33,8 @@ const UserDetails = () => {
 
   //when save button is clicked save the data
   const saveHandler = () => {
-    if(edit === true){
-      return
+    if (edit === true) {
+      return;
     }
     dispatch(
       userUpdate({
@@ -41,6 +46,12 @@ const UserDetails = () => {
     );
     setEdit(true);
     dispatch(userDetails({ _id }));
+  };
+
+  //delete account handler
+  const handleDelete = () => {
+    dispatch(userDelete({ _id }));
+    dispatch(logout());
   };
 
   return (
@@ -83,6 +94,9 @@ const UserDetails = () => {
       <div className="detail_actions">
         <Button variant="outlined" onClick={() => setEdit((prev) => !prev)}>
           Edit Details
+        </Button>
+        <Button variant="outlined" onClick={handleDelete}>
+          Delete
         </Button>
         <Button variant="contained" onClick={saveHandler}>
           Save

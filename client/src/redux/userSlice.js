@@ -81,6 +81,22 @@ export const userLogout = createAsyncThunk(
   }
 );
 
+//delete user
+export const userDelete = createAsyncThunk(
+  "user/delete",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userRequest.post("/deregister", data);
+      return response;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {

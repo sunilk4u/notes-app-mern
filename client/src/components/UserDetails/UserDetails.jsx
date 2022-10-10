@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   logout,
+  uploadImage,
   userDelete,
   userDetails,
   userUpdate,
@@ -13,7 +14,7 @@ import {
 
 const UserDetails = () => {
   const [edit, setEdit] = useState(true);
-  const { _id, name, email, about } = useSelector((state) => state.user);
+  const { _id, name, email, about, image } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
     name: name,
@@ -54,12 +55,34 @@ const UserDetails = () => {
     dispatch(logout());
   };
 
+  //upload image handler
+  const handleUpload = () => {
+    const file = document.getElementById("file");
+    const formData = new FormData();
+    formData.append("_id", _id);
+    formData.append("file", file.files[0]);
+    dispatch(uploadImage(formData));
+  };
+
   return (
     <div className="user_details">
-      <div className="avatar_section">
-        <Avatar className="avatar" alt="user" src={avatar} />
-        <Button variant="outlined">Upload Photo</Button>
-      </div>
+      <form id="form" encType="multipart/form-data">
+        <div className="avatar_section">
+          <Avatar
+            className="avatar"
+            alt="user"
+            src={
+              image === ""
+                ? `${process.env.REACT_APP_API_URI}/static/${_id}.jpg`
+                : image
+            }
+          />
+          <input id="file" type="file" name="file" />
+          <Button variant="outlined" onClick={handleUpload}>
+            Upload Photo
+          </Button>
+        </div>
+      </form>
       <div className="details">
         <TextField
           disabled
@@ -77,7 +100,6 @@ const UserDetails = () => {
           onChange={(e) =>
             setFormValues({ ...formValues, name: e.currentTarget.value })
           }
-          defaultValue={formValues.name}
         />
         <TextField
           disabled={edit}
@@ -88,7 +110,6 @@ const UserDetails = () => {
           onChange={(e) =>
             setFormValues({ ...formValues, about: e.currentTarget.value })
           }
-          defaultValue={formValues.about}
         />
       </div>
       <div className="detail_actions">

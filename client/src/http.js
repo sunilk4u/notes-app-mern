@@ -27,3 +27,9 @@ export const blobNotesRequest = axios.create({
     "Content-Type": "application/octet-stream",
   },
 });
+
+export const uploadImageRequest = axios.create({
+  baseURL: `${process.env.REACT_APP_API_URI}/api/user`,
+  timeout: 1000,
+  withCredentials: true,
+});

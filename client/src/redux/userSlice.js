@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { userRequest } from "../http";
+import { uploadImageRequest, userRequest } from "../http";
 
 //check user login auth
 export const checkLogin = createAsyncThunk(
@@ -97,6 +97,22 @@ export const userDelete = createAsyncThunk(
   }
 );
 
+//upload user image
+export const uploadImage = createAsyncThunk(
+  "user/upload",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await uploadImageRequest.post("/upload", data);
+      return response;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -107,6 +123,7 @@ export const userSlice = createSlice({
     email: "",
     status: "idle", //idle, pending, fulfilled, error
     error_message: "",
+    image: "",
   },
   reducers: {
     logout: (state) => {
@@ -158,6 +175,16 @@ export const userSlice = createSlice({
     [userDetails.rejected]: (state, action) => {
       state.status = "error";
       state.error_message = action.payload;
+    },
+    [uploadImage.pending]: (state, action) => {
+      state.staus = "pending";
+      state.image = ``;
+    },
+    [uploadImage.fulfilled]: (state, action) => {
+      state.staus = "fullfilled";
+      state.image = `${process.env.REACT_APP_API_URI}/static/${
+        state._id
+      }.jpg?ver=${(Math.random() * 10000000).toFixed()}`;
     },
   },
 });

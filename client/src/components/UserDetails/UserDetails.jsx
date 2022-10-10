@@ -23,9 +23,9 @@ const UserDetails = () => {
   });
 
   //when page loads then load user data
-  useEffect((_id) => {
+  useEffect(() => {
     dispatch(userDetails({ _id }));
-  }, [dispatch]);
+  }, [dispatch, _id]);
 
   //when about fetch is complete then render the component again
   useEffect(() => {

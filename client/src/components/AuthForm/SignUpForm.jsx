@@ -1,8 +1,9 @@
 import { Alert, Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { userSignup } from "../../redux/userSlice";
+import { Navigate, useNavigate } from "react-router-dom";
+import { logout, userSignup } from "../../redux/userSlice";
+import { resetData } from "../../redux/noteSlice";
 
 const SignUpForm = () => {
   const [formValues, setFormValues] = useState({
@@ -14,6 +15,13 @@ const SignUpForm = () => {
     (state) => state.user
   );
   const dispatch = useDispatch();
+  const nav = useNavigate();
+
+  useEffect(() => {
+    if (status === "userSignup_fulfilled") {
+      nav("/");
+    }
+  }, [status, nav]);
 
   //is logged in as user then redirect to notes page
   if (isLoggedIn) {
@@ -26,6 +34,13 @@ const SignUpForm = () => {
       return;
     } else {
       dispatch(userSignup(formValues));
+      dispatch(logout());
+      dispatch(resetData());
+      setFormValues({
+        name: "",
+        email: "",
+        password: "",
+      });
     }
   };
 

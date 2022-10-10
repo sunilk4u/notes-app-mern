@@ -153,11 +153,8 @@ export const userSlice = createSlice({
       state.status = "pending";
     },
     [userSignup.fulfilled]: (state, action) => {
-      state.status = "fulfiiled";
-      state.isLoggedIn = true;
-      state._id = action.payload.data._id;
-      state.name = action.payload.data.name;
-      state.email = action.payload.data.email;
+      state.status = "userSignup_fulfilled";
+      state.isLoggedIn = false;
     },
     [userSignup.rejected]: (state, action) => {
       state.status = "error";

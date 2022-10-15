@@ -92,6 +92,10 @@ const Notes = () => {
           {message || "cannot connect to server"}
         </Alert>
       )}
+      <div className="note-heading">
+        <h2>Create your notes</h2>
+      </div>
+
       <div className="add_note">
         <TextField
           id="standard"

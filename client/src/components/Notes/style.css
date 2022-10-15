@@ -16,11 +16,22 @@
     justify-content: center;
     gap: 2rem;
 }
+.note-heading{
+    display: flex;
+    justify-content: center;
+}
+.note-heading h2{
+    color: var(--primary-dark);
+    font-size: 2.5rem;
+}
 
 @media only screen and (max-width: 600px) {
     .notes_action_buttons {
         display: flex;
         flex-direction: column;
         gap: 10px;
+    }
+    .note-heading h2{
+        font-size: 1.5rem;
     }
 }

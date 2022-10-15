@@ -56,6 +56,7 @@ To run this project, you will need to add the following environment variables to
 #### Client
 
  - CD into client folder and run command `npm install`.
+ - Create a `.env` file and add client environment variables.
  - Run client using command `npm run start`.
  - Your client is now running.
  - (Optional) Run `npm run build` to create static files of the client.
@@ -63,7 +64,28 @@ To run this project, you will need to add the following environment variables to
 #### Server
 
  - CD into server folder and run command `npm install`.
+ - Create a `.env` file and add server environment variables.
  - Run server using command `npm run start`.
  - Your server is now running.
 
+## Screenshots
 
+#### Login page
+
+![login_page](./screenshots/login.jpg)
+
+#### Signup page
+
+![signup_page](./screenshots/signup.jpg)
+
+#### Account page
+
+![account_page](./screenshots/account.jpg)
+
+#### Notes page
+
+![notes_page](./screenshots/notes.jpg)
+
+#### Save Notes
+
+![save_notes](./screenshots/save_note.jpg)
